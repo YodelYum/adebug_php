@@ -81,26 +81,33 @@ function aaa($message, $comment="COMMENT"){
      $new_debug_message['comment'] = $comment;
      $new_debug_message['type'] = gettype($message);
      array_shift($backtrace);
+     $stacktrace = [];
      foreach ($backtrace as $value){
-          $stacktrace[] =$value['function'];
+          $stacktrace[] .= $value['function'];
      }
      $new_debug_message['stacktrace'] = $stacktrace;
-
+print_r( $new_debug_message['stacktrace']);
 
      $output = $new_debug_message;
      socket_sendto($socket, json_encode($output), strlen(json_encode($output)),
                    0, "127.0.0.1", "80");
         socket_close($socket);
-        print_r($new_debug_message);
 }
 
 
 function a(){
      aaa("blub");
 }
+function b(){
+     a();
+}
+function c(){
+     b();
+}
 
 
-a();
+
+c();
 
 
 
